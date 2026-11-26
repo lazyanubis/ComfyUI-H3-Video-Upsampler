@@ -16,4 +16,14 @@ except Exception as _e:  # noqa: BLE001
 
 _register_folder()
 
+# Apple Silicon shims (fork-local, see mps_patch.py).
+from . import tiled_upsampler as _tiled_upsampler
+try:
+    from . import face_pass as _face_pass
+except Exception:  # noqa: BLE001
+    _face_pass = None
+from .mps_patch import apply as _apply_mps_patch
+
+_apply_mps_patch(_tiled_upsampler, _face_pass)
+
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
